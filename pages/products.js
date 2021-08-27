@@ -11,6 +11,7 @@ import { render } from "react-dom";
 import { useState } from "react";
 import { useQuery } from "react-apollo";
 import gql from "graphql-tag";
+import React from "react";
 
 const product_query = gql(`{
   products(first: 10) {
@@ -47,10 +48,12 @@ const Index = () => {
         // media={media}
         accessibilityLabel={`View details for ${title}`}
       >
-        <h3>
-          <TextStyle variation="strong">{handle}</TextStyle>
-        </h3>
-        <div>{price}</div>
+        <>
+          <h3>
+            <TextStyle variation="strong">{handle}</TextStyle>
+          </h3>
+          <div>{price}</div>
+        </>
       </ResourceItem>
     );
   };
@@ -59,7 +62,7 @@ const Index = () => {
 
   return (
     <Page>
-      <Link href="/"> Back </Link>
+      <Link href="/">Back</Link>
       <Card>
         <ResourceList
           loading={loading}

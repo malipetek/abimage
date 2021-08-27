@@ -6,6 +6,7 @@ import Shopify, { ApiVersion } from "@shopify/shopify-api";
 import Koa from "koa";
 import next from "next";
 import Router from "koa-router";
+import session from "koa-session";
 
 dotenv.config();
 const port = parseInt(process.env.PORT, 10) || 8081;
@@ -33,6 +34,17 @@ const ACTIVE_SHOPIFY_SHOPS = {};
 app.prepare().then(async () => {
   const server = new Koa();
   const router = new Router();
+
+  server.use(
+    session(
+      {
+        sameSite: "none",
+        secure: true,
+      },
+      server
+    )
+  );
+
   server.keys = [Shopify.Context.API_SECRET_KEY];
   server.use(
     createShopifyAuth({
@@ -41,6 +53,12 @@ app.prepare().then(async () => {
         const { shop, accessToken, scope } = ctx.state.shopify;
         const host = ctx.query.host;
         ACTIVE_SHOPIFY_SHOPS[shop] = scope;
+
+        ctx.session.shop = shop;
+        ctx.session.token = accessToken;
+
+        console.log("ctx.state ", ctx.state);
+        console.log("ctx.session ", ctx.session);
 
         const response = await Shopify.Webhooks.Registry.register({
           shop,
@@ -56,7 +74,7 @@ app.prepare().then(async () => {
             `Failed to register APP_UNINSTALLED webhook: ${response.result}`
           );
         }
-
+        console.log("redirecting 1 ", shop);
         // Redirect to app with shop parameter upon auth
         ctx.redirect(`/?shop=${shop}&host=${host}`);
       },
@@ -89,13 +107,16 @@ app.prepare().then(async () => {
   router.get("(/_next/static/.*)", handleRequest); // Static content is clear
   router.get("/_next/webpack-hmr", handleRequest); // Webpack content is clear
   router.get("(.*)", async (ctx) => {
+    console.log("some request is happening");
     const shop = ctx.query.shop;
-
-    // This shop hasn't been seen yet, go through OAuth to create a session
-    if (ACTIVE_SHOPIFY_SHOPS[shop] === undefined) {
-      ctx.redirect(`/auth?shop=${shop}`);
-    } else {
-      await handleRequest(ctx);
+    if (shop) {
+      // This shop hasn't been seen yet, go through OAuth to create a session
+      if (ACTIVE_SHOPIFY_SHOPS[shop] === undefined) {
+        console.log("redirect 2, ctx.query", ctx.query);
+        ctx.redirect(`/auth?shop=${shop}`);
+      } else {
+        await handleRequest(ctx);
+      }
     }
   });
 
