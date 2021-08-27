@@ -8,7 +8,7 @@ import { authenticatedFetch } from "@shopify/app-bridge-utils";
 import { Redirect } from "@shopify/app-bridge/actions";
 import "@shopify/polaris/dist/styles.css";
 import translations from "@shopify/polaris/locales/en.json";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import NextLink from "next/link";
 // import { useRouter } from 'next/router'
 import "../lib/styles.css";
@@ -35,9 +35,71 @@ function userLoggedInFetch(app) {
     return response;
   };
 }
+function ProvidersWrapper({ children, ...props }) {
+  const { router, host: hostp } = props;
 
+  const [host, setHost] = useState(hostp);
+
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    const host = url.searchParams.get("host");
+
+    // If host is not set, than the page is being loaded outside of App Bridge
+    // so we should proceed with starting OAuth
+    if (host) {
+      setHost(host);
+    } else {
+      window.location.pathname = `/api/auth/shopify/login`;
+    }
+  }, []);
+
+  // --- Prepare breadcrumbs ---
+  const routes = router.route
+    .split("/")
+    .filter(Boolean)
+    .map((route) => {
+      // check if the route is a slug
+      const isSlug = /\[[^\]]+\]/.test(route);
+
+      if (!isSlug) return route;
+
+      const slug = route.replace(/\[|\]/g, "");
+
+      return router.query[slug] || "slug not found";
+    });
+  const currentRoute = routes[routes.length - 1];
+  const routesExceptLast = routes.slice(0, routes.length - 1);
+  // --- End Prepare breadcrumbs ---
+
+  const Component = props.Component;
+
+  return (
+    <AppProvider linkComponent={RouterLink} i18n={translations}>
+      <Provider
+        config={{
+          apiKey: API_KEY,
+          host: host,
+          forceRedirect: false,
+        }}
+      >
+        <TitleBar
+          title={currentRoute}
+          breadcrumbs={
+            routesExceptLast.length
+              ? routesExceptLast.map((route) => ({
+                  content: route,
+                  url: `/${route}`,
+                }))
+              : null
+          }
+        />
+        {children}
+      </Provider>
+    </AppProvider>
+  );
+}
 function MyProvider(props) {
-  const { router } = props;
+  const { router, host: hostp } = props;
   const app = useAppBridge();
   const [showNavigationActive, setShowNavigationActive] = useState(false);
   const [showNavigationToggle, setShowNavigationToggle] = useState(false);
@@ -120,30 +182,15 @@ class MyApp extends App {
   render() {
     const { Component, pageProps, host, router } = this.props;
 
-    const primaryAction = { content: "Foo", url: "/foo" };
-    const secondaryActions = [{ content: "Bar", url: "/bar" }];
-    const actionGroups = [
-      { title: "Baz", actions: [{ content: "Baz", url: "/baz" }] },
-    ];
-
-    const [routes, currentRoute] = router.route.split("/");
-
     return (
-      <AppProvider linkComponent={RouterLink} i18n={translations}>
-        <Provider
-          config={{
-            apiKey: API_KEY,
-            host: host,
-            forceRedirect: false,
-          }}
-        >
-          <TitleBar
-            title={currentRoute}
-            breadcrumbs={routes.length ? [{ content: routes }] : null}
-          />
-          <MyProvider Component={Component} {...pageProps} router={router} />
-        </Provider>
-      </AppProvider>
+      <ProvidersWrapper {...pageProps} router={router} host={host}>
+        <MyProvider
+          Component={Component}
+          {...pageProps}
+          router={router}
+          host={host}
+        />
+      </ProvidersWrapper>
     );
   }
 }

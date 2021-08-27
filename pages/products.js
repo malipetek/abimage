@@ -61,8 +61,15 @@ const Index = () => {
   if (error) return `Error! ${error.message}`;
 
   return (
-    <Page>
-      <Link href="/">Back</Link>
+    <Page
+      // primaryAction={
+      //   {
+      //     content: 'Save',
+      //     disabled: true
+      //   }
+      // }
+      breadcrumbs={[{ content: "home", url: "/" }]}
+    >
       <Card>
         <ResourceList
           loading={loading}
