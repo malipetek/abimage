@@ -104,6 +104,38 @@ app.prepare().then(async () => {
     }
   );
 
+  router.all(
+    "/rest/(.*)",
+    verifyRequest({ returnHeader: true }),
+    async (ctx, next) => {
+      console.log("rest request url ===>", ctx.req.url);
+
+      ctx.req.url = ctx.req.url.replace("/rest", "");
+      const restPath = ctx.originalUrl.replace(/\/rest\/?/, "");
+      const { client, session } = await Shopify.Utils.withSession({
+        clientType: "rest",
+        isOnline: true,
+        req: ctx.req,
+        res: ctx.res,
+        shop: ctx.session.shop,
+      });
+
+      // get request methods
+      const method = ctx.req.method.toLowerCase();
+      console.log(
+        "method ",
+        method,
+        " restPath ",
+        restPath,
+        " client[method] ",
+        client[method]
+      );
+      ctx.response = await client[method]({
+        path: restPath,
+      });
+    }
+  );
+
   router.get("(/_next/static/.*)", handleRequest); // Static content is clear
   router.get("/_next/webpack-hmr", handleRequest); // Webpack content is clear
   router.get("(.*)", async (ctx) => {

@@ -8,10 +8,10 @@ import {
 } from "@shopify/polaris";
 import Link from "next/link";
 import { render } from "react-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery } from "react-apollo";
 import gql from "graphql-tag";
-import React from "react";
+import { parseGid } from "@shopify/admin-graphql-api-utilities";
 
 const product_query = gql(`{
   products(first: 10) {
@@ -31,7 +31,7 @@ const product_query = gql(`{
   }
 }`);
 
-const Index = () => {
+const Products = ({ apiFetch }) => {
   const [filter, setFilter] = useState(false);
   const { loading, data, error } = useQuery(product_query);
 
@@ -60,6 +60,24 @@ const Index = () => {
 
   if (error) return `Error! ${error.message}`;
 
+  useEffect(() => {
+    if (data && data.products.edges) {
+      (async () => {
+        const id = parseGid(data.products.edges[0].node.id);
+        const productsRequest = await apiFetch(`/rest/products/${id}`, {
+          method: "GET",
+          credentials: "same-origin",
+          headers: {
+            accept: "*/*",
+            contentType: "application/json",
+          },
+        });
+        const productData = await productsRequest.json();
+        console.log("productsRequest ", productsRequest, productData);
+      })();
+    }
+  }, [data]);
+
   return (
     <Page
       // primaryAction={
@@ -82,4 +100,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default Products;

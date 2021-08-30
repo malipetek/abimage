@@ -1,7 +1,7 @@
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "react-apollo";
 import App from "next/app";
-import { AppProvider, Frame, Navigation, TopBar, Link } from "@shopify/polaris";
+import { AppProvider, Frame, Navigation, TopBar } from "@shopify/polaris";
 import { HomeMajor, OrdersMajor, ProductsMajor } from "@shopify/polaris-icons";
 import { Provider, useAppBridge, TitleBar } from "@shopify/app-bridge-react";
 import { authenticatedFetch } from "@shopify/app-bridge-utils";
@@ -18,6 +18,7 @@ function userLoggedInFetch(app) {
   const fetchFunction = authenticatedFetch(app);
 
   return async (uri, options) => {
+    console.log("sending authenticated fetch ", uri, options);
     const response = await fetchFunction(uri, options);
 
     if (
@@ -35,6 +36,7 @@ function userLoggedInFetch(app) {
     return response;
   };
 }
+
 function ProvidersWrapper({ children, ...props }) {
   const { router, host: hostp } = props;
 
@@ -107,8 +109,10 @@ function MyProvider(props) {
   const toggleMobileNavigationActive = () =>
     setShowNavigationActive(!showNavigationActive);
 
+  const apiFetch = userLoggedInFetch(app);
+
   const client = new ApolloClient({
-    fetch: userLoggedInFetch(app),
+    fetch: apiFetch,
     fetchOptions: {
       credentials: "include",
     },
@@ -156,7 +160,7 @@ function MyProvider(props) {
           </Navigation>
         }
       >
-        <Component {...props} />
+        <Component {...props} apiFetch={apiFetch} />
       </Frame>
     </ApolloProvider>
   );
