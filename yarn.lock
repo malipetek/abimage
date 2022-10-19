@@ -37,9 +37,9 @@
   version "7.19.4"
   resolved "https://registry.npmjs.org/@babel/compat-data/-/compat-data-7.19.4.tgz"
 
-"@babel/core@^7.17.10":
+"@babel/core@^7.18.13":
   version "7.19.3"
-  resolved "https://registry.npmjs.org/@babel/core/-/core-7.19.3.tgz"
+  resolved "https://registry.yarnpkg.com/@babel/core/-/core-7.19.3.tgz#2519f62a51458f43b682d61583c3810e7dcee64c"
   dependencies:
     "@ampproject/remapping" "^2.1.0"
     "@babel/code-frame" "^7.18.6"
@@ -170,25 +170,25 @@
   dependencies:
     "@babel/helper-plugin-utils" "^7.18.6"
 
-"@babel/plugin-transform-react-jsx-development@^7.16.7":
+"@babel/plugin-transform-react-jsx-development@^7.18.6":
   version "7.18.6"
-  resolved "https://registry.npmjs.org/@babel/plugin-transform-react-jsx-development/-/plugin-transform-react-jsx-development-7.18.6.tgz"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-transform-react-jsx-development/-/plugin-transform-react-jsx-development-7.18.6.tgz#dbe5c972811e49c7405b630e4d0d2e1380c0ddc5"
   dependencies:
     "@babel/plugin-transform-react-jsx" "^7.18.6"
 
-"@babel/plugin-transform-react-jsx-self@^7.16.7":
+"@babel/plugin-transform-react-jsx-self@^7.18.6":
   version "7.18.6"
-  resolved "https://registry.npmjs.org/@babel/plugin-transform-react-jsx-self/-/plugin-transform-react-jsx-self-7.18.6.tgz"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-transform-react-jsx-self/-/plugin-transform-react-jsx-self-7.18.6.tgz#3849401bab7ae8ffa1e3e5687c94a753fc75bda7"
   dependencies:
     "@babel/helper-plugin-utils" "^7.18.6"
 
-"@babel/plugin-transform-react-jsx-source@^7.16.7":
+"@babel/plugin-transform-react-jsx-source@^7.18.6":
   version "7.18.6"
-  resolved "https://registry.npmjs.org/@babel/plugin-transform-react-jsx-source/-/plugin-transform-react-jsx-source-7.18.6.tgz"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-transform-react-jsx-source/-/plugin-transform-react-jsx-source-7.18.6.tgz#06e9ae8a14d2bc19ce6e3c447d842032a50598fc"
   dependencies:
     "@babel/helper-plugin-utils" "^7.18.6"
 
-"@babel/plugin-transform-react-jsx@^7.17.3", "@babel/plugin-transform-react-jsx@^7.18.6":
+"@babel/plugin-transform-react-jsx@^7.18.10", "@babel/plugin-transform-react-jsx@^7.18.6":
   version "7.19.0"
   resolved "https://registry.npmjs.org/@babel/plugin-transform-react-jsx/-/plugin-transform-react-jsx-7.19.0.tgz"
   dependencies:
@@ -345,13 +345,6 @@
   version "1.0.3"
   resolved "https://registry.npmjs.org/@redis/time-series/-/time-series-1.0.3.tgz"
 
-"@rollup/pluginutils@^4.2.1":
-  version "4.2.1"
-  resolved "https://registry.npmjs.org/@rollup/pluginutils/-/pluginutils-4.2.1.tgz"
-  dependencies:
-    estree-walker "^2.0.1"
-    picomatch "^2.2.2"
-
 "@shopify/app-bridge-react@^2.0.26":
   version "2.3.0"
   resolved "https://registry.npmjs.org/@shopify/app-bridge-react/-/app-bridge-react-2.3.0.tgz"
@@ -375,17 +368,17 @@
   version "1.6.4"
   resolved "https://registry.npmjs.org/@shopify/network/-/network-1.6.4.tgz"
 
-"@shopify/polaris-icons@^6.4.0":
-  version "6.4.0"
-  resolved "https://registry.yarnpkg.com/@shopify/polaris-icons/-/polaris-icons-6.4.0.tgz#877920ef0a8f99a6b55cf74a274248df0e992239"
+"@shopify/polaris-icons@^5.4.0":
+  version "5.4.0"
+  resolved "https://registry.npmjs.org/@shopify/polaris-icons/-/polaris-icons-5.4.0.tgz"
 
-"@shopify/polaris-tokens@^6.2.1":
-  version "6.2.1"
-  resolved "https://registry.yarnpkg.com/@shopify/polaris-tokens/-/polaris-tokens-6.2.1.tgz#eebb08b67018ea95d8ac10e579c16abd66b61afc"
+"@shopify/polaris-tokens@^5.5.2":
+  version "5.5.2"
+  resolved "https://registry.npmjs.org/@shopify/polaris-tokens/-/polaris-tokens-5.5.2.tgz"
 
-"@shopify/polaris@^10.8.0":
-  version "10.8.0"
-  resolved "https://registry.yarnpkg.com/@shopify/polaris/-/polaris-10.8.0.tgz#c75035da4b6be98f478d533c34140999c4b4c3da"
+"@shopify/polaris@^9.14.1":
+  version "9.24.0"
+  resolved "https://registry.npmjs.org/@shopify/polaris/-/polaris-9.24.0.tgz"
   dependencies:
     "@shopify/polaris-icons" "^6.4.0"
     "@shopify/polaris-tokens" "^6.2.1"
@@ -457,11 +450,11 @@
   version "15.7.3"
   resolved "https://registry.npmjs.org/@types/prop-types/-/prop-types-15.7.3.tgz"
 
-"@types/react-dom@^18.0.6":
-  version "18.0.6"
-  resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-18.0.6.tgz#36652900024842b74607a17786b6662dd1e103a1"
+"@types/react-dom@*":
+  version "16.9.12"
+  resolved "https://registry.npmjs.org/@types/react-dom/-/react-dom-16.9.12.tgz"
   dependencies:
-    "@types/react" "*"
+    "@types/react" "^16"
 
 "@types/react-transition-group@^4.4.2":
   version "4.4.5"
@@ -469,9 +462,9 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^18.0.15":
-  version "18.0.21"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-18.0.21.tgz#b8209e9626bb00a34c76f55482697edd2b43cc67"
+"@types/react@*", "@types/react@^16":
+  version "16.14.5"
+  resolved "https://registry.npmjs.org/@types/react/-/react-16.14.5.tgz"
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"
@@ -505,18 +498,17 @@
     "@types/node" "*"
     "@types/webidl-conversions" "*"
 
-"@vitejs/plugin-react@1.3.2":
-  version "1.3.2"
-  resolved "https://registry.npmjs.org/@vitejs/plugin-react/-/plugin-react-1.3.2.tgz"
+"@vitejs/plugin-react@2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@vitejs/plugin-react/-/plugin-react-2.1.0.tgz#4c99df15e71d2630601bd3018093bdc787d40e55"
   dependencies:
-    "@babel/core" "^7.17.10"
-    "@babel/plugin-transform-react-jsx" "^7.17.3"
-    "@babel/plugin-transform-react-jsx-development" "^7.16.7"
-    "@babel/plugin-transform-react-jsx-self" "^7.16.7"
-    "@babel/plugin-transform-react-jsx-source" "^7.16.7"
-    "@rollup/pluginutils" "^4.2.1"
-    react-refresh "^0.13.0"
-    resolve "^1.22.0"
+    "@babel/core" "^7.18.13"
+    "@babel/plugin-transform-react-jsx" "^7.18.10"
+    "@babel/plugin-transform-react-jsx-development" "^7.18.6"
+    "@babel/plugin-transform-react-jsx-self" "^7.18.6"
+    "@babel/plugin-transform-react-jsx-source" "^7.18.6"
+    magic-string "^0.26.2"
+    react-refresh "^0.14.0"
 
 "@wry/context@^0.6.0":
   version "0.6.1"
@@ -1279,10 +1271,6 @@ escape-string-regexp@^1.0.5:
   version "1.0.5"
   resolved "https://registry.npmjs.org/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz"
 
-estree-walker@^2.0.1:
-  version "2.0.2"
-  resolved "https://registry.npmjs.org/estree-walker/-/estree-walker-2.0.2.tgz"
-
 etag@~1.8.1:
   version "1.8.1"
   resolved "https://registry.npmjs.org/etag/-/etag-1.8.1.tgz"
@@ -1806,6 +1794,12 @@ lru-cache@^6.0.0:
   dependencies:
     yallist "^4.0.0"
 
+magic-string@^0.26.2:
+  version "0.26.7"
+  resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.26.7.tgz#caf7daf61b34e9982f8228c4527474dac8981d6f"
+  dependencies:
+    sourcemap-codec "^1.4.8"
+
 make-dir@^3.1.0:
   version "3.1.0"
   resolved "https://registry.npmjs.org/make-dir/-/make-dir-3.1.0.tgz"
@@ -2226,7 +2220,7 @@ picocolors@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/picocolors/-/picocolors-1.0.0.tgz"
 
-picomatch@^2.0.4, picomatch@^2.2.1, picomatch@^2.2.2:
+picomatch@^2.0.4, picomatch@^2.2.1:
   version "2.3.1"
   resolved "https://registry.npmjs.org/picomatch/-/picomatch-2.3.1.tgz"
 
@@ -2355,9 +2349,9 @@ react-is@^16.13.1, react-is@^16.7.0:
   version "16.13.1"
   resolved "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
 
-react-refresh@^0.13.0:
-  version "0.13.0"
-  resolved "https://registry.npmjs.org/react-refresh/-/react-refresh-0.13.0.tgz"
+react-refresh@^0.14.0:
+  version "0.14.0"
+  resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.14.0.tgz#4e02825378a5f227079554d4284889354e5f553e"
 
 react-transition-group@^4.4.2:
   version "4.4.5"
@@ -2574,6 +2568,10 @@ socks@^2.6.2, socks@^2.7.0:
 source-map-js@^1.0.2:
   version "1.0.2"
   resolved "https://registry.npmjs.org/source-map-js/-/source-map-js-1.0.2.tgz"
+
+sourcemap-codec@^1.4.8:
+  version "1.4.8"
+  resolved "https://registry.yarnpkg.com/sourcemap-codec/-/sourcemap-codec-1.4.8.tgz#ea804bd94857402e6992d05a38ef1ae35a9ab4c4"
 
 sparse-bitfield@^3.0.3:
   version "3.0.3"
