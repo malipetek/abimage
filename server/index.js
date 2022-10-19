@@ -116,19 +116,22 @@ export async function createServer(
    */
   let vite;
   if (!isProd) {
+    console.log("PORT ", PORT);
     vite = await import("vite").then(({ createServer }) =>
       createServer({
         root,
         logLevel: isTest ? "error" : "info",
         server: {
+          strictPort: true,
           port: PORT,
           hmr: {
-            protocol: "ws",
-            host: "localhost",
+            protocol: "wss",
+            host: "",
             port: 64999,
-            clientPort: 64999,
+            clientPort: PORT,
+            path: "/",
           },
-          middlewareMode: "html",
+          middlewareMode: true,
         },
       })
     );

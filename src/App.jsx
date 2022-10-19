@@ -23,7 +23,7 @@ export default function App() {
         config={{
           apiKey: process.env.SHOPIFY_API_KEY,
           host: new URL(location.href).searchParams.get("host"),
-          forceRedirect: true,
+          forceRedirect: false,
         }}
       >
         <MyProvider>

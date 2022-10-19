@@ -80,7 +80,7 @@ export function ProductsCard() {
               });
             }}
           >
-            Populate 5 products
+            Populate 3333 products
           </Button>
         </TextContainer>
       </Card>
