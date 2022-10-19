@@ -352,9 +352,9 @@
     estree-walker "^2.0.1"
     picomatch "^2.2.2"
 
-"@shopify/app-bridge-react@^3.4.2":
-  version "3.4.2"
-  resolved "https://registry.yarnpkg.com/@shopify/app-bridge-react/-/app-bridge-react-3.4.2.tgz#4a48ce6b611c86a4ed0563745c410c4915d27e10"
+"@shopify/app-bridge-react@^2.0.26":
+  version "2.3.0"
+  resolved "https://registry.npmjs.org/@shopify/app-bridge-react/-/app-bridge-react-2.3.0.tgz"
   dependencies:
     "@shopify/app-bridge" "^3.4.2"
 
@@ -371,33 +371,26 @@
     base64url "^3.0.1"
     web-vitals "^3.0.1"
 
-"@shopify/app-bridge@^3.4.2":
-  version "3.4.2"
-  resolved "https://registry.yarnpkg.com/@shopify/app-bridge/-/app-bridge-3.4.2.tgz#dfad4f3fa8e29a0ba799ae457c7166585cf8534b"
-  dependencies:
-    base64url "^3.0.1"
-    web-vitals "^3.0.1"
-
 "@shopify/network@^1.5.1":
   version "1.6.4"
   resolved "https://registry.npmjs.org/@shopify/network/-/network-1.6.4.tgz"
 
-"@shopify/polaris-icons@^5.4.0":
-  version "5.4.0"
-  resolved "https://registry.npmjs.org/@shopify/polaris-icons/-/polaris-icons-5.4.0.tgz"
+"@shopify/polaris-icons@^6.4.0":
+  version "6.4.0"
+  resolved "https://registry.yarnpkg.com/@shopify/polaris-icons/-/polaris-icons-6.4.0.tgz#877920ef0a8f99a6b55cf74a274248df0e992239"
 
-"@shopify/polaris-tokens@^5.5.2":
-  version "5.5.2"
-  resolved "https://registry.npmjs.org/@shopify/polaris-tokens/-/polaris-tokens-5.5.2.tgz"
+"@shopify/polaris-tokens@^6.2.1":
+  version "6.2.1"
+  resolved "https://registry.yarnpkg.com/@shopify/polaris-tokens/-/polaris-tokens-6.2.1.tgz#eebb08b67018ea95d8ac10e579c16abd66b61afc"
 
-"@shopify/polaris@^9.14.1":
-  version "9.24.0"
-  resolved "https://registry.npmjs.org/@shopify/polaris/-/polaris-9.24.0.tgz"
+"@shopify/polaris@^10.8.0":
+  version "10.8.0"
+  resolved "https://registry.yarnpkg.com/@shopify/polaris/-/polaris-10.8.0.tgz#c75035da4b6be98f478d533c34140999c4b4c3da"
   dependencies:
-    "@shopify/polaris-icons" "^5.4.0"
-    "@shopify/polaris-tokens" "^5.5.2"
-    "@types/react" "*"
-    "@types/react-dom" "*"
+    "@shopify/polaris-icons" "^6.4.0"
+    "@shopify/polaris-tokens" "^6.2.1"
+    "@types/react" "^18.0.15"
+    "@types/react-dom" "^18.0.6"
     "@types/react-transition-group" "^4.4.2"
     react-fast-compare "^3.2.0"
     react-transition-group "^4.4.2"
@@ -464,11 +457,11 @@
   version "15.7.3"
   resolved "https://registry.npmjs.org/@types/prop-types/-/prop-types-15.7.3.tgz"
 
-"@types/react-dom@*":
-  version "16.9.12"
-  resolved "https://registry.npmjs.org/@types/react-dom/-/react-dom-16.9.12.tgz"
+"@types/react-dom@^18.0.6":
+  version "18.0.6"
+  resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-18.0.6.tgz#36652900024842b74607a17786b6662dd1e103a1"
   dependencies:
-    "@types/react" "^16"
+    "@types/react" "*"
 
 "@types/react-transition-group@^4.4.2":
   version "4.4.5"
@@ -476,9 +469,9 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^16":
-  version "16.14.5"
-  resolved "https://registry.npmjs.org/@types/react/-/react-16.14.5.tgz"
+"@types/react@*", "@types/react@^18.0.15":
+  version "18.0.21"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-18.0.21.tgz#b8209e9626bb00a34c76f55482697edd2b43cc67"
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"
