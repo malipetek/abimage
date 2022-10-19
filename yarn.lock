@@ -358,15 +358,22 @@
   dependencies:
     "@shopify/app-bridge" "^3.4.2"
 
-"@shopify/app-bridge-utils@^2.0.26":
-  version "2.3.0"
-  resolved "https://registry.npmjs.org/@shopify/app-bridge-utils/-/app-bridge-utils-2.3.0.tgz"
+"@shopify/app-bridge-utils@^3.4.2":
+  version "3.4.2"
+  resolved "https://registry.yarnpkg.com/@shopify/app-bridge-utils/-/app-bridge-utils-3.4.2.tgz#ea99ded610293b5d40c6bc90ec27dc5285c21acf"
   dependencies:
-    "@shopify/app-bridge" "^2.3.0"
+    "@shopify/app-bridge" "^3.4.2"
 
 "@shopify/app-bridge@^2.0.22", "@shopify/app-bridge@^2.3.0":
   version "2.3.0"
   resolved "https://registry.npmjs.org/@shopify/app-bridge/-/app-bridge-2.3.0.tgz"
+  dependencies:
+    base64url "^3.0.1"
+    web-vitals "^3.0.1"
+
+"@shopify/app-bridge@^3.4.2":
+  version "3.4.2"
+  resolved "https://registry.yarnpkg.com/@shopify/app-bridge/-/app-bridge-3.4.2.tgz#dfad4f3fa8e29a0ba799ae457c7166585cf8534b"
   dependencies:
     base64url "^3.0.1"
     web-vitals "^3.0.1"
@@ -1582,9 +1589,9 @@ humanize-ms@^1.2.1:
   dependencies:
     ms "^2.0.0"
 
-husky@^8.0.1:
-  version "8.0.1"
-  resolved "https://registry.yarnpkg.com/husky/-/husky-8.0.1.tgz#511cb3e57de3e3190514ae49ed50f6bc3f50b3e9"
+husky@^7.0.4:
+  version "7.0.4"
+  resolved "https://registry.npmjs.org/husky/-/husky-7.0.4.tgz"
 
 iconv-lite@0.4.24:
   version "0.4.24"
