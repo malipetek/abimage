@@ -11,7 +11,7 @@ import {
 
 import trophyImgUrl from "../assets/home-trophy.png";
 
-import { ThemeList } from "./ThemeList";
+import { ThemeList } from "../components/ThemeList";
 
 export function HomePage() {
   return (

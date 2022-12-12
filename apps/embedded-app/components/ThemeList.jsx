@@ -28,7 +28,7 @@ export function ThemeList() {
           return (
             <ResourceItem
               id={id}
-              url={"url"}
+              url={`/app/theme/${id}`}
               accessibilityLabel={`View details for ${id}`}
             >
               {name} ({id})

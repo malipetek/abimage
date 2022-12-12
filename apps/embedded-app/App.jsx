@@ -13,23 +13,31 @@ import { Redirect } from "@shopify/app-bridge/actions";
 import { AppProvider as PolarisProvider } from "@shopify/polaris";
 import translations from "@shopify/polaris/locales/en.json";
 import "@shopify/polaris/build/esm/styles.css";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
+import Link from "./components/Link";
 
-import { HomePage } from "./components/HomePage";
+import { HomePage } from "./routes/HomePage";
+import { Theme } from "./routes/Theme";
 
 export default function App() {
   return (
-    <PolarisProvider i18n={translations}>
-      <AppBridgeProvider
-        config={{
-          apiKey: process.env.SHOPIFY_API_KEY,
-          host: new URL(location.href).searchParams.get("host"),
-          forceRedirect: true,
-        }}
-      >
-        <MyProvider>
-          <HomePage />
-        </MyProvider>
-      </AppBridgeProvider>
+    <PolarisProvider i18n={translations} linkComponent={Link}>
+      <BrowserRouter>
+        <AppBridgeProvider
+          config={{
+            apiKey: process.env.SHOPIFY_API_KEY,
+            host: new URL(location.href).searchParams.get("host"),
+            forceRedirect: true,
+          }}
+        >
+          <MyProvider>
+            <Routes>
+              <Route path="/app/" element={<HomePage />} />
+              <Route path="/app/theme/:id" element={<Theme />} />
+            </Routes>
+          </MyProvider>
+        </AppBridgeProvider>
+      </BrowserRouter>
     </PolarisProvider>
   );
 }
