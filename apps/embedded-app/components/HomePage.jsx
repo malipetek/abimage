@@ -11,7 +11,7 @@ import {
 
 import trophyImgUrl from "../assets/home-trophy.png";
 
-import { ProductsCard } from "./Products";
+import { ThemeList } from "./ThemeList";
 
 export function HomePage() {
   return (
@@ -30,17 +30,11 @@ export function HomePage() {
                   <Heading> Welcome aboard! Let's pour the images 🌄🏞🏙</Heading>
                 </TextContainer>
               </Stack.Item>
-              <Stack.Item>
-                <div style={{ padding: "0 20px" }}>
-                  <Image
-                    source={trophyImgUrl}
-                    alt="Nice work on building a Shopify app"
-                    width={120}
-                  />
-                </div>
-              </Stack.Item>
             </Stack>
           </Card>
+        </Layout.Section>
+        <Layout.Section>
+          <ThemeList />
         </Layout.Section>
         <Layout.Section></Layout.Section>
       </Layout>

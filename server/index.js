@@ -6,7 +6,7 @@ import express from "express";
 import { Shopify, ApiVersion } from "@shopify/shopify-api";
 import "dotenv/config";
 import fs from "fs";
-import embeddedApp from "./sub-apps/embedded-app.js";
+import embeddedApp from "./sub-apps/embedded-app/embedded-app.js";
 import publicApp from "./sub-apps/public-app.js";
 import vhost from "vhost";
 
@@ -21,7 +21,7 @@ const wss = new WebSocketServer({ server: httpServer });
 
 app.use(express.json());
 app.use((req, res, next) => {
-  console.log("request received", req.path);
+  // console.log("request received", req.path);
   next();
 });
 

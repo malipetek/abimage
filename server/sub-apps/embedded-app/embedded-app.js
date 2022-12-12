@@ -6,8 +6,9 @@ import { Shopify, ApiVersion } from "@shopify/shopify-api";
 import fs from "fs";
 import "dotenv/config";
 
-import applyAuthMiddleware from "../middleware/auth.js";
-import verifyRequest from "../middleware/verify-request.js";
+import applyAuthMiddleware from "../../middleware/auth.js";
+import verifyRequest from "../../middleware/verify-request.js";
+import { themes } from "./rest-endpoints/index.js";
 
 const USE_ONLINE_TOKENS = true;
 const TOP_LEVEL_OAUTH_COOKIE = "shopify_top_level_oauth";
@@ -101,6 +102,7 @@ export default async (app, wss) => {
     next();
   });
 
+  router.get("/api/themes", themes(app));
   router.use("/*", (req, res, next) => {
     const { shop } = req.query;
 
@@ -120,7 +122,7 @@ export default async (app, wss) => {
     vite = await import("vite").then(({ createServer }) =>
       createServer({
         configFile: `${process.cwd()}/apps/embedded-app/vite.config.js`,
-        logLevel: "info",
+        logLevel: "error",
         server: {
           hmr: {
             port: 8081,
