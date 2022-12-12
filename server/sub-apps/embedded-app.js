@@ -36,118 +36,127 @@ Shopify.Webhooks.Registry.addHandler("APP_UNINSTALLED", {
   },
 });
 
-let root = process.cwd();
-let isProd = process.env.NODE_ENV === "production";
+export default async (app, wss) => {
+  let root = process.cwd();
+  let isProd = process.env.NODE_ENV === "production";
 
-const app = express();
-const router = express.Router();
-app.set("top-level-oauth-cookie", TOP_LEVEL_OAUTH_COOKIE);
-app.set("active-shopify-shops", ACTIVE_SHOPIFY_SHOPS);
-app.set("use-online-tokens", USE_ONLINE_TOKENS);
+  const router = express.Router();
+  const prefix = "/app";
 
-app.use(cookieParser(Shopify.Context.API_SECRET_KEY));
+  app.set("top-level-oauth-cookie", TOP_LEVEL_OAUTH_COOKIE);
+  app.set("active-shopify-shops", ACTIVE_SHOPIFY_SHOPS);
+  app.set("use-online-tokens", USE_ONLINE_TOKENS);
 
-applyAuthMiddleware(app);
+  app.use(cookieParser(Shopify.Context.API_SECRET_KEY));
 
-router.post("/webhooks", async (req, res) => {
-  try {
-    await Shopify.Webhooks.Registry.process(req, res);
-    console.log(`Webhook processed, returned status code 200`);
-  } catch (error) {
-    console.log(`Failed to process webhook: ${error}`);
-    if (!res.headersSent) {
-      res.status(500).send(error.message);
-    }
-  }
-});
+  applyAuthMiddleware(app, router, prefix);
 
-router.get("/products-count", verifyRequest(app), async (req, res) => {
-  const session = await Shopify.Utils.loadCurrentSession(
-    req,
-    res,
-    app.get("use-online-tokens")
-  );
-  router.post("/graphql", verifyRequest(app), async (req, res) => {
+  router.post("/webhooks", async (req, res) => {
     try {
-      const response = await Shopify.Utils.graphqlProxy(req, res);
-      res.status(200).send(response.body);
+      await Shopify.Webhooks.Registry.process(req, res);
+      console.log(`Webhook processed, returned status code 200`);
     } catch (error) {
-      res.status(500).send(error.message);
+      console.log(`Failed to process webhook: ${error}`);
+      if (!res.headersSent) {
+        res.status(500).send(error.message);
+      }
     }
   });
 
-  app.use(express.json());
-
-  const { Product } = await import(
-    `@shopify/shopify-api/dist/rest-resources/${Shopify.Context.API_VERSION}/index.js`
-  );
-
-  const countData = await Product.count({ session });
-  res.status(200).send(countData);
-});
-
-router.use((req, res, next) => {
-  const shop = req.query.shop;
-  if (Shopify.Context.IS_EMBEDDED_APP && shop) {
-    res.setHeader(
-      "Content-Security-Policy",
-      `frame-ancestors https://${shop} https://admin.shopify.com;`
+  router.get("/products-count", verifyRequest(app), async (req, res) => {
+    const session = await Shopify.Utils.loadCurrentSession(
+      req,
+      res,
+      app.get("use-online-tokens")
     );
-  } else {
-    res.setHeader("Content-Security-Policy", `frame-ancestors 'none';`);
-  }
-  next();
-});
+    router.post("/graphql", verifyRequest(app), async (req, res) => {
+      try {
+        const response = await Shopify.Utils.graphqlProxy(req, res);
+        res.status(200).send(response.body);
+      } catch (error) {
+        res.status(500).send(error.message);
+      }
+    });
 
-router.use("/*", (req, res, next) => {
-  const { shop } = req.query;
+    app.use(express.json());
 
-  // Detect whether we need to reinstall the app, any request from Shopify will
-  // include a shop in the query parameters.
-  if (app.get("active-shopify-shops")[shop] === undefined && shop) {
-    res.redirect(`/auth?${new URLSearchParams(req.query).toString()}`);
-  } else {
+    const { Product } = await import(
+      `@shopify/shopify-api/dist/rest-resources/${Shopify.Context.API_VERSION}/index.js`
+    );
+
+    const countData = await Product.count({ session });
+    res.status(200).send(countData);
+  });
+
+  router.use((req, res, next) => {
+    const shop = req.query.shop;
+    if (Shopify.Context.IS_EMBEDDED_APP && shop) {
+      res.setHeader(
+        "Content-Security-Policy",
+        `frame-ancestors https://${shop} https://admin.shopify.com;`
+      );
+    } else {
+      res.setHeader("Content-Security-Policy", `frame-ancestors 'none';`);
+    }
     next();
-  }
-});
+  });
 
-let vite;
-if (!isProd) {
-  vite = await import("vite").then(({ createServer }) =>
-    createServer({
-      root,
-      logLevel: isTest ? "error" : "info",
-      server: {
-        strictPort: true,
-        port: PORT,
-        hmr: {
-          protocol: "wss",
-          host: "",
-          port: 64999,
-          clientPort: PORT,
-          path: "/",
+  router.use("/*", (req, res, next) => {
+    const { shop } = req.query;
+
+    // Detect whether we need to reinstall the app, any request from Shopify will
+    // include a shop in the query parameters.
+    if (app.get("active-shopify-shops")[shop] === undefined && shop) {
+      res.redirect(
+        `${prefix}/auth?${new URLSearchParams(req.query).toString()}`
+      );
+    } else {
+      next();
+    }
+  });
+
+  let vite;
+  if (!isProd) {
+    vite = await import("vite").then(({ createServer }) =>
+      createServer({
+        configFile: `${process.cwd()}/apps/embedded-app/vite.config.js`,
+        logLevel: "info",
+        server: {
+          hmr: {
+            port: 8081,
+            protocol: "wss",
+            server: wss,
+            clientPort: 443,
+          },
         },
-        middlewareMode: true,
+      })
+    );
+    router.use(vite.middlewares);
+  } else {
+    const compression = await import("compression").then(
+      ({ default: fn }) => fn
+    );
+    const serveStatic = await import("serve-static").then(
+      ({ default: fn }) => fn
+    );
+
+    router.use(compression());
+    router.use(
+      "/*",
+      (req, res, next) => {
+        console.log("static", req.path);
+        next();
       },
-    })
-  );
-  router.use(vite.middlewares);
-} else {
-  const compression = await import("compression").then(({ default: fn }) => fn);
-  const serveStatic = await import("serve-static").then(
-    ({ default: fn }) => fn
-  );
+      serveStatic(resolve("dist/embedded"))
+    );
+  }
 
-  router.use(compression());
-  router.use(serveStatic(resolve("dist/embedded")));
-}
-
-router.use("/*", (req, res, next) => {
-  // Client-side routing will pick up on the correct route to render, so we always render the index here
-  res
-    .status(200)
-    .set("Content-Type", "text/html")
-    .send(fs.readFileSync(`${process.cwd()}/dist/embedded/index.html`));
-});
-
-export default router;
+  router.use("/*", (req, res, next) => {
+    // Client-side routing will pick up on the correct route to render, so we always render the index here
+    res
+      .status(200)
+      .set("Content-Type", "text/html")
+      .send(fs.readFileSync(`${process.cwd()}/dist/embedded/index.html`));
+  });
+  return router;
+};

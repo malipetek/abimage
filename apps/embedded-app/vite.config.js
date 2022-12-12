@@ -8,6 +8,8 @@ const PORT = parseInt(process.env.PORT || "8081", 10);
  */
 export default {
   root: "./apps/embedded-app/",
+  base: "/app/",
+  cacheDir: `${process.cwd()}/node_modules/.embeddedvite/`,
   build: {
     outDir: "../../dist/embedded",
     rollupOptions: {
@@ -17,13 +19,6 @@ export default {
   server: {
     base: "/app/",
     port: PORT,
-    hmr: {
-      protocol: "wss",
-      host: "",
-      port: 64999 + 1,
-      clientPort: PORT,
-      path: "/",
-    },
     middlewareMode: true,
   },
   define: {

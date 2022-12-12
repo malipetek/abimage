@@ -1,9 +1,8 @@
 // @ts-check
 import { resolve } from "path";
-import https from "https";
-import websocket from "ws";
+import http from "http";
+import { WebSocketServer } from "ws";
 import express from "express";
-import cookieParser from "cookie-parser";
 import { Shopify, ApiVersion } from "@shopify/shopify-api";
 import "dotenv/config";
 import fs from "fs";
@@ -17,20 +16,22 @@ const isTest = process.env.NODE_ENV === "test" || !!process.env.VITE_TEST_BUILD;
 let root = process.cwd();
 let isProd = process.env.NODE_ENV === "production";
 const app = express();
+const httpServer = http.createServer({}, app);
+const wss = new WebSocketServer({ server: httpServer });
 
 app.use(express.json());
 app.use((req, res, next) => {
-  // console.log('request received', req.path);
+  console.log("request received", req.path);
   next();
 });
 
 app.use(
-  "/app/",
+  "/app",
   (req, res, next) => {
     // console.log('emb app');
     next();
   },
-  embeddedApp
+  await embeddedApp(app, wss)
 );
 
 app.use(
@@ -39,9 +40,13 @@ app.use(
     // console.log('public app', req.path);
     next();
   },
-  publicApp
+  await publicApp(wss)
 );
 
-const httpsServer = https.createServer(app);
-const wss = new websocket.Server({ server: httpsServer });
-httpsServer.listen(PORT, () => console.log("Listening"));
+// httpServer.on('upgrade', function (request, socket, head) {
+//   console.log('upgrade request received');
+//     // wss.handleUpgrade(request, socket, head, socket => {
+//     //   console.log(`Websocket connected to ${request.url}`);
+//     // });
+// });
+httpServer.listen(PORT, () => console.log("Listening"));

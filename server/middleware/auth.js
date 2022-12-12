@@ -2,11 +2,11 @@ import { Shopify } from "@shopify/shopify-api";
 
 import topLevelAuthRedirect from "../helpers/top-level-auth-redirect.js";
 
-export default function applyAuthMiddleware(app) {
-  app.get("/auth", async (req, res) => {
+export default function applyAuthMiddleware(app, router, prefix) {
+  router.get(`/auth`, async (req, res) => {
     if (!req.signedCookies[app.get("top-level-oauth-cookie")]) {
       return res.redirect(
-        `/auth/toplevel?${new URLSearchParams(req.query).toString()}`
+        `${prefix}/auth/toplevel?${new URLSearchParams(req.query).toString()}`
       );
     }
 
@@ -14,14 +14,14 @@ export default function applyAuthMiddleware(app) {
       req,
       res,
       req.query.shop,
-      "/auth/callback",
+      `${prefix}/auth/callback`,
       app.get("use-online-tokens")
     );
 
     res.redirect(redirectUrl);
   });
 
-  app.get("/auth/toplevel", (req, res) => {
+  router.get("/auth/toplevel", (req, res) => {
     res.cookie(app.get("top-level-oauth-cookie"), "1", {
       signed: true,
       httpOnly: true,
@@ -34,13 +34,14 @@ export default function applyAuthMiddleware(app) {
       topLevelAuthRedirect({
         apiKey: Shopify.Context.API_KEY,
         hostName: Shopify.Context.HOST_NAME,
-        host: req.query.host,
+        host: `${req.query.host}${prefix}`,
         query: req.query,
+        prefix,
       })
     );
   });
 
-  app.get("/auth/callback", async (req, res) => {
+  router.get("/auth/callback", async (req, res) => {
     try {
       const session = await Shopify.Auth.validateAuthCallback(
         req,
@@ -70,7 +71,7 @@ export default function applyAuthMiddleware(app) {
       }
 
       // Redirect to app with shop parameter upon auth
-      res.redirect(`/?shop=${session.shop}&host=${host}`);
+      res.redirect(`${prefix}/?shop=${session.shop}&host=${host}`);
     } catch (e) {
       switch (true) {
         case e instanceof Shopify.Errors.InvalidOAuthError:
@@ -80,7 +81,7 @@ export default function applyAuthMiddleware(app) {
         case e instanceof Shopify.Errors.CookieNotFound:
         case e instanceof Shopify.Errors.SessionNotFound:
           // This is likely because the OAuth session cookie expired before the merchant approved the request
-          res.redirect(`/auth?shop=${req.query.shop}`);
+          res.redirect(`${prefix}/auth?shop=${req.query.shop}`);
           break;
         default:
           res.status(500);

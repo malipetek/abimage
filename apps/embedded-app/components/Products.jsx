@@ -6,6 +6,7 @@ import {
   DisplayText,
   TextStyle,
   Button,
+  Pagination,
 } from "@shopify/polaris";
 import { Toast, useAppBridge } from "@shopify/app-bridge-react";
 import { gql, useMutation } from "@apollo/client";
@@ -13,10 +14,25 @@ import { gql, useMutation } from "@apollo/client";
 import { userLoggedInFetch } from "../App";
 
 const PRODUCTS_QUERY = gql`
-  mutation populateProduct($input: ProductInput!) {
-    productCreate(input: $input) {
-      product {
-        title
+  query {
+    products(first: 50) {
+      edges {
+        node {
+          id
+          title
+          priceRangeV2 {
+            minVariantPrice {
+              amount
+            }
+            maxVariantPrice {
+              amount
+            }
+          }
+          featuredImage {
+            id
+            url
+          }
+        }
       }
     }
   }
