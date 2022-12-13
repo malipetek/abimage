@@ -10,14 +10,23 @@ import {
 } from "@shopify/app-bridge-react";
 import { authenticatedFetch } from "@shopify/app-bridge-utils";
 import { Redirect } from "@shopify/app-bridge/actions";
-import { AppProvider as PolarisProvider } from "@shopify/polaris";
+import {
+  AppProvider as PolarisProvider,
+  Frame
+} from "@shopify/polaris";
+
 import translations from "@shopify/polaris/locales/en.json";
 import "@shopify/polaris/build/esm/styles.css";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import Link from "./components/Link";
+import SaveBar from "./components/SaveBar";
 
 import { HomePage } from "./routes/HomePage";
 import { Theme } from "./routes/Theme";
+
+import { useEffect, useState } from 'react';
+import { Provider as ReduxProvider } from 'react-redux'
+import store from './store/store'
 
 export default function App() {
   return (
@@ -30,12 +39,24 @@ export default function App() {
             forceRedirect: true,
           }}
         >
-          <MyProvider>
-            <Routes>
-              <Route path="/app/" element={<HomePage />} />
-              <Route path="/app/theme/:id" element={<Theme />} />
-            </Routes>
-          </MyProvider>
+          <ReduxProvider store={store}>
+            <MyProvider>
+              <Frame
+              // logo={logo}
+              // topBar={topBarMarkup}
+              // navigation={navigationMarkup}
+              // showMobileNavigation={mobileNavigationActive}
+              // onNavigationDismiss={toggleMobileNavigationActive}
+              // skipToContentTarget={skipToContentRef.current}
+              >
+                <SaveBar />
+                <Routes>
+                  <Route path="/app/" element={<HomePage />} />
+                  <Route path="/app/theme/:id" element={<Theme />} />
+                </Routes>
+              </Frame>
+            </MyProvider>
+          </ReduxProvider>
         </AppBridgeProvider>
       </BrowserRouter>
     </PolarisProvider>

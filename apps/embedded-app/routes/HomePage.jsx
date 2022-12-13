@@ -27,7 +27,7 @@ export function HomePage() {
             >
               <Stack.Item fill>
                 <TextContainer spacing="loose">
-                  <Heading> Welcome aboard! Let's pour the images 🌄🏞🏙</Heading>
+                  <Heading> Select assets to serve through app proxy </Heading>
                 </TextContainer>
               </Stack.Item>
             </Stack>
