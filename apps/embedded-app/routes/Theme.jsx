@@ -10,7 +10,6 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { userLoggedInFetch } from "../App";
 import { Toast, useAppBridge } from "@shopify/app-bridge-react";
-import { test } from "vitest";
 
 export function Theme() {
   const { id } = useParams();
@@ -27,7 +26,7 @@ export function Theme() {
     })();
   }, []);
   return (
-    <Page fullWidth title={theme ? theme : "Theme"}>
+    <Page fullWidth title={"Theme"}>
       <Layout>
         <Layout.Section>
           <Card sectioned>
